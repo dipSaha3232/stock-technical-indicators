@@ -49,8 +49,8 @@ def calculateADX(df: pd.DataFrame(), interval: int=14):
     df['DI'+str(interval)+'-'] = abs(df['+DI'+str(interval)] - df['-DI'+str(interval)])
     df['DI'+str(interval)] = df['+DI'+str(interval)] + df['-DI'+str(interval)]  
     df['DX'] = (df['DI'+str(interval)+'-'] / df['DI'+str(interval)])*100  
-    df['ADX'+str(interval)] = df['DX'].rolling(interval).mean()
-    df['ADX'+str(interval)] =   df['ADX'+str(interval)].fillna(df['ADX'+str(interval)].mean())  
+    df['ADX'] = df['DX'].rolling(interval).mean()
+    df['ADX'] =   df['ADX'].fillna(df['ADX'].mean())  
     del df['TR_TMP1'], df['TR_TMP2'], df['TR_TMP3'], df['TR'], df['TR'+str(interval)]
     del df['+DMI'+str(interval)], df['DI'+str(interval)+'-']
     del df['DI'+str(interval)], df['-DMI'+str(interval)]
@@ -61,7 +61,7 @@ def calculateADX(df: pd.DataFrame(), interval: int=14):
 def getAverageDirectionalIndex(companyId):
     df = fetchData(companyId)
     df = calculateADX(df)
-    df = df[['DateEpoch', 'ADX14']].dropna()
+    df = df[['DateEpoch', 'ADX']].dropna()
     return list(df.T.to_dict().values())
 
 def getOBV(companyId):
