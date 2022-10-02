@@ -20,7 +20,8 @@ def getBollingerBand(companyId):
     m = 2
     df['BOLU'] = df['SMA20'] + m*df['STD20']
     df['BOLD'] = df['SMA20'] - m*df['STD20']
-    return df[['DateString', 'DateEpoch', 'BOLU', 'BOLD']]
+    df = df[['DateEpoch', 'BOLU', 'BOLD']].dropna()
+    return list(df.T.to_dict().values())
 
 def getStochastic(companyId):
     df = fetchData(companyId)
@@ -28,7 +29,8 @@ def getStochastic(companyId):
     df['LowestLow14'] = df['Low'].rolling(14).min()
     df['HighestHigh14'] = df['High'].rolling(14).max()
     df['Stochastic'] = (df['Close'] - df['LowestLow14'])/(df['HighestHigh14'] - df['LowestLow14']) * 100
-    return df[['DateString', 'DateEpoch', 'Stochastic']]
+    df = df[['DateEpoch', 'Stochastic']].dropna()
+    return list(df.T.to_dict().values())
 
 def calculateADX(df: pd.DataFrame(), interval: int=14):
     df['-DM'] = df['Low'].shift(1) - df['Low']
@@ -59,14 +61,16 @@ def calculateADX(df: pd.DataFrame(), interval: int=14):
 def getAverageDirectionalIndex(companyId):
     df = fetchData(companyId)
     df = calculateADX(df)
-    return df[['DateString', 'DateEpoch', 'ADX14']]
+    df = df[['DateEpoch', 'ADX14']].dropna()
+    return list(df.T.to_dict().values())
 
 def getOBV(companyId):
     df = fetchData(companyId)
     df = df[['Close', 'Volume', 'DateString', 'DateEpoch']].copy()
     df['OBV'] = np.where(df['Close'] > df['Close'].shift(1), df['Volume'], 
                 np.where(df['Close'] < df['Close'].shift(1), -df['Volume'], 0)).cumsum()
-    return df[['DateString', 'DateEpoch', 'OBV']]
+    df = df[['DateEpoch', 'OBV']].dropna()
+    return list(df.T.to_dict().values())
 
 df = getAverageDirectionalIndex("BEXIMCO")
-print(df.tail())
+print(df)
