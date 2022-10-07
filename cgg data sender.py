@@ -7,14 +7,14 @@ def fetchData(companyId):
         todos2 = json.loads(response2.text)
     return todos2
 
-class CGGData():
-    def __init__(self, values) -> None:
-        self.ShareHoldingPercentage = values[0] 
-        self.SponsorDirector = values[1] 
-        self.Govt = values[2] 
-        self.Institute = values[3] 
-        self.Foreign = values[4] 
-        self.Public = values[5]
+# class CGGData():
+#     def __init__(self, values) -> None:
+#         self.ShareHoldingPercentage = values[0] 
+#         self.SponsorDirector = values[1] 
+#         self.Govt = values[2] 
+#         self.Institute = values[3] 
+#         self.Foreign = values[4] 
+#         self.Public = values[5]
 
 def getRequiredColumns(columnNames):
     requiredColumnNames = []
