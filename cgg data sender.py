@@ -24,22 +24,23 @@ def getRequiredColumns(columnNames):
     requiredColumnNames = requiredColumnNames[:-1]
     return requiredColumnNames
 
-def createCGGDataObjectArray(data, requiredColumnNames):
-    ccgDataObjectArray = []
-    iterCount = int(len(requiredColumnNames)/6)
-    for i in range(iterCount):
-        values = [data[key] for key in requiredColumnNames[i*6:i*6+6]]
-        cggData = CGGData(values)
-        values = []
-        ccgDataObjectArray.append(cggData)
-    return ccgDataObjectArray
+# def createCGGDataObjectArray(data, requiredColumnNames):
+#     ccgDataObjectArray = []
+#     iterCount = int(len(requiredColumnNames)/6)
+#     for i in range(iterCount):
+#         values = [data[key] for key in requiredColumnNames[i*6:i*6+6]]
+#         cggData = CGGData(values)
+#         values = []
+#         ccgDataObjectArray.append(cggData)
+#     return ccgDataObjectArray
 
-def getCCGDataObject(companyId):
+def getCCGData(companyId):
     data = fetchData(companyId)
     columnNames = list(data.keys())
     requiredColumnNames = getRequiredColumns(columnNames)
-    ccgDataObjectArray = createCGGDataObjectArray(data, requiredColumnNames)
-    return ccgDataObjectArray
+    # ccgDataObjectArray = createCGGDataObjectArray(data, requiredColumnNames)
+    ccgData = dict((key, data[key]) for key in requiredColumnNames)
+    return ccgData
 
-output = getCCGDataObject("BEXIMCO")
-print(output[0].Institute)
+output = getCCGData("BEXIMCO")
+print(output)
